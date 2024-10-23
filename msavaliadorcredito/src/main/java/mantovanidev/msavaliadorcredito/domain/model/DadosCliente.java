@@ -1,4 +1,4 @@
-package mantovanidev.msavaliadorcredito.domain.domain;
+package mantovanidev.msavaliadorcredito.domain.model;
 
 import lombok.Data;
 

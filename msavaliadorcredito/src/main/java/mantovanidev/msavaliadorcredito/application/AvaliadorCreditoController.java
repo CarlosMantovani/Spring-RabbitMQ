@@ -1,8 +1,7 @@
 package mantovanidev.msavaliadorcredito.application;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import mantovanidev.msavaliadorcredito.domain.domain.SituacaoCliente;
+import mantovanidev.msavaliadorcredito.domain.model.SituacaoCliente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +22,6 @@ public class AvaliadorCreditoController {
     public ResponseEntity<SituacaoCliente> consultaSituacaoCliente(@RequestParam("cpf") String cpf){
 
         SituacaoCliente situacaoCliente = avaliadorCreditoService.obterSituacaoCliente(cpf);
+        return ResponseEntity.ok(situacaoCliente);
     }
 }
