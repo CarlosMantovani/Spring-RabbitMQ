@@ -1,7 +1,10 @@
 package mantovanidev.msavaliadorcredito.application;
 
 import lombok.RequiredArgsConstructor;
+import mantovanidev.msavaliadorcredito.application.ex.DadosClienteNotFoundExpetion;
+import mantovanidev.msavaliadorcredito.application.ex.ErroComunicacaoMicroserviceExpetion;
 import mantovanidev.msavaliadorcredito.domain.model.SituacaoCliente;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +22,17 @@ public class AvaliadorCreditoController {
         return "ok";
     }
     @GetMapping(value= "situacao-cliente", params = "cpf")
-    public ResponseEntity<SituacaoCliente> consultaSituacaoCliente(@RequestParam("cpf") String cpf){
+    public ResponseEntity consultaSituacaoCliente(@RequestParam("cpf") String cpf){
 
-        SituacaoCliente situacaoCliente = avaliadorCreditoService.obterSituacaoCliente(cpf);
-        return ResponseEntity.ok(situacaoCliente);
+
+        try {
+            SituacaoCliente situacaoCliente = avaliadorCreditoService.obterSituacaoCliente(cpf);
+            return ResponseEntity.ok(situacaoCliente);
+        } catch (DadosClienteNotFoundExpetion e) {
+            return ResponseEntity.notFound().build();
+        } catch (ErroComunicacaoMicroserviceExpetion e) {
+            return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+        }
+
     }
 }
