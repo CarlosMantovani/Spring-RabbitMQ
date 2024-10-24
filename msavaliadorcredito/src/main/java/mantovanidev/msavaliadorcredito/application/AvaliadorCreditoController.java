@@ -3,13 +3,12 @@ package mantovanidev.msavaliadorcredito.application;
 import lombok.RequiredArgsConstructor;
 import mantovanidev.msavaliadorcredito.application.ex.DadosClienteNotFoundExpetion;
 import mantovanidev.msavaliadorcredito.application.ex.ErroComunicacaoMicroserviceExpetion;
+import mantovanidev.msavaliadorcredito.domain.model.DadosAvaliacao;
+import mantovanidev.msavaliadorcredito.domain.model.RetornoAvaliacaoCliente;
 import mantovanidev.msavaliadorcredito.domain.model.SituacaoCliente;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/avaliacoes-credito")
@@ -24,7 +23,6 @@ public class AvaliadorCreditoController {
     @GetMapping(value= "situacao-cliente", params = "cpf")
     public ResponseEntity consultaSituacaoCliente(@RequestParam("cpf") String cpf){
 
-
         try {
             SituacaoCliente situacaoCliente = avaliadorCreditoService.obterSituacaoCliente(cpf);
             return ResponseEntity.ok(situacaoCliente);
@@ -33,6 +31,17 @@ public class AvaliadorCreditoController {
         } catch (ErroComunicacaoMicroserviceExpetion e) {
             return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
         }
+    }
+    @PostMapping
+    public ResponseEntity realizarAvalicao( @RequestBody DadosAvaliacao dados) {
 
+        try {
+           RetornoAvaliacaoCliente retornoAvaliacaoCliente = avaliadorCreditoService.realizarAvaliacao(dados.getCpf(), dados.getRenda());
+            return ResponseEntity.ok(retornoAvaliacaoCliente);
+        } catch (DadosClienteNotFoundExpetion e) {
+            return ResponseEntity.notFound().build();
+        } catch (ErroComunicacaoMicroserviceExpetion e) {
+            return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+        }
     }
 }
