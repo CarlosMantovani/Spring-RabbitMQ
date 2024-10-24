@@ -1,7 +1,11 @@
 spring:
   application:
     name: msavaliadorcredito
-
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 server:
   port: 0
 
@@ -15,3 +19,7 @@ eureka:
     hostname: localhost
     prefer-ip-address: true
     ip-address: 127.0.0.1
+
+mq:
+  queue:
+    emissao-cartoes: emissao-cartoes
