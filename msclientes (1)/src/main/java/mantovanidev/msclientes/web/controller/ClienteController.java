@@ -1,6 +1,7 @@
 package mantovanidev.msclientes.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mantovanidev.msclientes.entities.Cliente;
 import mantovanidev.msclientes.services.ClienteService;
 import mantovanidev.msclientes.web.dto.ClienteSaveRequest;
@@ -11,13 +12,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("clientes")
+@RequestMapping("/clientes")
 @RequiredArgsConstructor
+@Slf4j
 public class ClienteController {
 
     private final ClienteService clienteService;
     @GetMapping
     public String status(){
+        log.info("obtento o status");
         return "ok";
     }
     @PostMapping
