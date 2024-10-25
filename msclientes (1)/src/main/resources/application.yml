@@ -15,3 +15,13 @@ eureka:
     hostname: localhost
     prefer-ip-address: true
     ip-address: 127.0.0.1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  file:
+    name: ./logs/log-file.log
