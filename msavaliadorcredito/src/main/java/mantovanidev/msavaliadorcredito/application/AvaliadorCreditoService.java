@@ -30,7 +30,9 @@ public class AvaliadorCreditoService {
         try {
             ResponseEntity<DadosCliente> dadosClienteResponse = clienteResourceClient.dadosCliente(cpf);
             ResponseEntity<List<CartaoCliente>> cartaoResponse = cartaoResourceClient.getCartoesBycCliente(cpf);
-            return SituacaoCliente.builder()
+
+            return SituacaoCliente
+                    .builder()
                     .cliente(dadosClienteResponse.getBody())
                     .cartoes(cartaoResponse.getBody())
                     .build();
@@ -78,7 +80,6 @@ public class AvaliadorCreditoService {
         }
     }
 
-    @PostMapping("solicitacoes-cartao")
     public ProtocoloSolicitacaoCartao solicitarEmissaoCartao(DadosSolicitacaoEmissaoCartao dados){
         try {
             solicitacaoEmissaoCartaoPublisher.solicitarCartao(dados);

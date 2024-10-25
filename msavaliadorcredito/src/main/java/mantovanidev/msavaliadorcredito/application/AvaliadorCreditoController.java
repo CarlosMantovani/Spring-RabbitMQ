@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/avaliacoes-credito")
 @RequiredArgsConstructor
 public class AvaliadorCreditoController {
+
     private final AvaliadorCreditoService avaliadorCreditoService;
 
     @GetMapping
@@ -44,6 +45,7 @@ public class AvaliadorCreditoController {
         }
     }
 
+    @PostMapping("solicitacoes-cartao")
     public ResponseEntity solicitarCarta(@RequestBody DadosSolicitacaoEmissaoCartao dados) {
        try {
            ProtocoloSolicitacaoCartao protocoloSolicitacaoCartao = avaliadorCreditoService.solicitarEmissaoCartao(dados);
