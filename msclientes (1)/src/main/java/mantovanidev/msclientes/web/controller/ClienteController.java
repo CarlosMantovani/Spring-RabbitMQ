@@ -5,17 +5,20 @@ import lombok.extern.slf4j.Slf4j;
 import mantovanidev.msclientes.entities.Cliente;
 import mantovanidev.msclientes.services.ClienteService;
 import mantovanidev.msclientes.web.dto.ClienteSaveRequest;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/clientes")
 @RequiredArgsConstructor
 @Slf4j
 public class ClienteController {
+
 
     private final ClienteService clienteService;
     @GetMapping

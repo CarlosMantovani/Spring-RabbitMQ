@@ -4,15 +4,19 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import mantovanidev.msavaliadorcredito.application.ex.DadosClienteNotFoundExpetion;
 import mantovanidev.msavaliadorcredito.application.ex.ErroComunicacaoMicroserviceExpetion;
+import mantovanidev.msavaliadorcredito.application.ex.ErroSolicitacaoCartaoException;
 import mantovanidev.msavaliadorcredito.domain.model.*;
 import mantovanidev.msavaliadorcredito.infra.clients.CartaoResourceClient;
 import mantovanidev.msavaliadorcredito.infra.clients.ClienteResourceClient;
+import mantovanidev.msavaliadorcredito.infra.mqueue.SolicitacaoEmissaoCartaoPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,11 +25,14 @@ public class AvaliadorCreditoService {
 
     private final ClienteResourceClient clienteResourceClient;
     private final CartaoResourceClient cartaoResourceClient;
+    private final SolicitacaoEmissaoCartaoPublisher solicitacaoEmissaoCartaoPublisher;
     public SituacaoCliente obterSituacaoCliente(String cpf) throws DadosClienteNotFoundExpetion, ErroComunicacaoMicroserviceExpetion{
         try {
             ResponseEntity<DadosCliente> dadosClienteResponse = clienteResourceClient.dadosCliente(cpf);
             ResponseEntity<List<CartaoCliente>> cartaoResponse = cartaoResourceClient.getCartoesBycCliente(cpf);
-            return SituacaoCliente.builder()
+
+            return SituacaoCliente
+                    .builder()
                     .cliente(dadosClienteResponse.getBody())
                     .cartoes(cartaoResponse.getBody())
                     .build();
@@ -71,6 +78,16 @@ public class AvaliadorCreditoService {
             }
             throw new ErroComunicacaoMicroserviceExpetion(e.getMessage(), status);
         }
-
     }
+
+    public ProtocoloSolicitacaoCartao solicitarEmissaoCartao(DadosSolicitacaoEmissaoCartao dados){
+        try {
+            solicitacaoEmissaoCartaoPublisher.solicitarCartao(dados);
+            var protocolo = UUID.randomUUID().toString();
+            return new ProtocoloSolicitacaoCartao(protocolo);
+        }catch (Exception e){
+            throw new ErroSolicitacaoCartaoException(e.getMessage());
+        }
+    }
+
 }
