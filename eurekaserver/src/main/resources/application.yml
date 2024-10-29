@@ -5,8 +5,8 @@ spring:
     basic:
       enabled: true
     user:
-      name: ${EUREKA_USER}
-      password: ${EUREKA_PASSWORD}
+      name: eureka-user
+      password: passEureka24
 server:
   port: 8761
 
