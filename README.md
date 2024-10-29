@@ -1,3 +1,3 @@
-﻿# springBoot com RabiitMq 
+﻿# springBoot com RabbitMq 
 
 
