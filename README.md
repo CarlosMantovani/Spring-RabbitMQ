@@ -90,12 +90,14 @@ Acesse [localhost:15672](http://localhost:15672), faça login (usuário: guest, 
 
 ## Autenticação
 
-Para acessar o endpoint de emissão de cartão, obtenha o token JWT via Keycloak seguindo estas instruções:
+Para acessar o endpoint de acessar qualquer endPoint, obtenha o token JWT via Keycloak seguindo estas instruções:
 
 1. **Grant type**: Client Credentials
 2. **Access Token URL**: `http://localhost:8081/realms/mscourserealm/protocol/openid-connect/token`
 3. **Client ID**: `msCredito`
 4. **Client Secret**: Utilize a senha obtida no Keycloak para o client `msCredito` do realm `mscourserealm`.
+
+Apos isso é so gerar o token e usar nos endpoints.
 
 ---
 
